@@ -99,7 +99,7 @@ export default function IntegrationDocView() {
           <li className="flex gap-3">
             <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">1</div>
             <div>
-              <h4 className="font-medium text-gray-900 text-sm">Auth & Users (Clerk / Firebase / Supabase)</h4>
+              <h4 className="font-medium text-gray-900 text-sm">Auth & Users (MonggoDB)</h4>
               <p className="text-xs text-gray-600 mt-0.5">Cho phép user đăng ký, lưu lại các keyword đang track, thiết lập niche mặc định cho tài khoản.</p>
             </div>
           </li>
@@ -113,7 +113,7 @@ export default function IntegrationDocView() {
           <li className="flex gap-3">
             <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">3</div>
             <div>
-              <h4 className="font-medium text-gray-900 text-sm">Database & Cron Jobs (PostgreSQL + Vercel Cron)</h4>
+              <h4 className="font-medium text-gray-900 text-sm">Database & Cron Jobs (MonggoDB + Vercel Cron)</h4>
               <p className="text-xs text-gray-600 mt-0.5">Tạo base dữ liệu chung lưu cache kết quả API để giảm chi phí gọi YouTube API nhiều lần. Chạy Cron job để cập nhật Trending score cho các keyword phổ biến.</p>
             </div>
           </li>

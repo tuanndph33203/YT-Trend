@@ -4,10 +4,16 @@ import KeywordDiscoveryView from './views/KeywordDiscoveryView';
 import GeneratorView from './views/GeneratorView';
 import IntegrationDocView from './views/IntegrationDocView';
 import SearchView from './views/SearchView';
+import TrendSpikerView from './views/TrendSpikerView';
+import ContentGapView from './views/ContentGapView';
+import NicheTrackerView from './views/NicheTrackerView';
+import ThumbnailTesterView from './views/ThumbnailTesterView';
+import PricingView from './views/PricingView';
+import AccountView from './views/AccountView';
 import { cn } from './lib/utils';
-import { LayoutDashboard, Compass, Sparkles, BookOpen, Menu, X, Flame, Search, Youtube } from 'lucide-react';
+import { LayoutDashboard, Compass, Sparkles, BookOpen, Menu, X, Flame, Search, BellRing, Layers, FolderTree, Image as ImageIcon, CreditCard, User } from 'lucide-react';
 
-type View = 'dashboard' | 'search' | 'discovery' | 'generator' | 'niche-discovery' | 'settings';
+type View = 'dashboard' | 'search' | 'discovery' | 'generator' | 'niche-discovery' | 'settings' | 'trend-spiker' | 'content-gap' | 'niche-tracker' | 'thumbnail-tester' | 'pricing' | 'account';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('search');
@@ -57,15 +63,21 @@ export default function App() {
           </div>
         </div>
         
-        <div className="p-4 flex-1 space-y-1">
+        <div className="p-4 flex-1 space-y-1 overflow-y-auto">
           <NavItem view="search" icon={Search} label="Mở rộng từ khoá" />
           <NavItem view="dashboard" icon={LayoutDashboard} label="Dashboard" />
           <NavItem view="discovery" icon={Compass} label="Từ khoá đã lưu" />
+          <NavItem view="trend-spiker" icon={BellRing} label="Cảnh báo Sớm (Trend)" />
+          <NavItem view="content-gap" icon={Layers} label="Content Gap" />
+          <NavItem view="niche-tracker" icon={FolderTree} label="Niche Tracker" />
+          <NavItem view="thumbnail-tester" icon={ImageIcon} label="Thumbnail A/B Test" />
           
           <div className="pt-6 pb-2">
             <p className="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Hệ Thống</p>
           </div>
-          <NavItem view="settings" icon={BookOpen} label="Tài liệu API & SaaS" />
+          <NavItem view="account" icon={User} label="Tài khoản (MongoDB)" />
+          <NavItem view="pricing" icon={CreditCard} label="Nâng cấp (Pro)" />
+          <NavItem view="settings" icon={BookOpen} label="Tài liệu & Architecture" />
         </div>
       </aside>
 
@@ -96,6 +108,12 @@ export default function App() {
              {currentView === 'search' && <SearchView onAnalyze={(kw) => navigate('generator', kw)} />}
              {currentView === 'dashboard' && <DashboardView onNavigate={navigate} />}
              {currentView === 'discovery' && <KeywordDiscoveryView onSelectKeyword={(kw) => navigate('generator', kw)} />}
+             {currentView === 'trend-spiker' && <TrendSpikerView />}
+             {currentView === 'content-gap' && <ContentGapView onNavigate={navigate} />}
+             {currentView === 'niche-tracker' && <NicheTrackerView />}
+             {currentView === 'thumbnail-tester' && <ThumbnailTesterView />}
+             {currentView === 'pricing' && <PricingView />}
+             {currentView === 'account' && <AccountView />}
              {currentView === 'generator' && (
                <GeneratorView 
                  keyword={activeKeyword || "ai tools"} 
