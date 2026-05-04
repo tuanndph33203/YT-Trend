@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Card, Button, Badge } from '../components/ui/shared';
-import { Search, Sparkles, Plus, Loader2, ArrowRight } from 'lucide-react';
+import { Search, Sparkles, Loader2, ArrowRight } from 'lucide-react';
 import { calculateOpportunityScore, classifyKeyword } from '../lib/scoring';
+import { fetchKeywordSuggestions } from '../lib/api-service';
 
 interface ExpandedKeyword {
   keyword: string;
@@ -11,31 +12,50 @@ interface ExpandedKeyword {
   trend: number;
 }
 
+// Pseudo-random number generator for metrics
+function hashString(str: string) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) hash = Math.imul(31, hash) + str.charCodeAt(i) | 0;
+  return Math.abs(hash);
+}
+
 export default function SearchView({ onAnalyze }: { onAnalyze: (kw: string) => void }) {
   const [seed, setSeed] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [results, setResults] = useState<ExpandedKeyword[]>([]);
+  const [error, setError] = useState('');
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!seed.trim()) return;
     
     setIsSearching(true);
     setResults([]);
+    setError('');
 
-    // Simulate API calls to YouTube Autocomplete, Trends, etc.
-    setTimeout(() => {
-      const mockResults: ExpandedKeyword[] = [
-        { keyword: `best ${seed} 2026`, source: 'YouTube Autocomplete', volume: 150000, competition: 65, trend: 85 },
-        { keyword: `how to use ${seed}`, source: 'Questions', volume: 85000, competition: 40, trend: 60 },
-        { keyword: `${seed} tutorial for beginners`, source: 'Long-tail', volume: 120000, competition: 55, trend: 75 },
-        { keyword: `${seed} alternatives`, source: 'Related', volume: 45000, competition: 30, trend: 90 },
-        { keyword: `why ${seed} is failing`, source: 'Google Trends', volume: 65000, competition: 25, trend: 95 },
-        { keyword: `${seed} review honest`, source: 'YouTube Autocomplete', volume: 90000, competition: 70, trend: 50 },
-      ];
-      setResults(mockResults);
+    try {
+      // Call Real API
+      const suggestions = await fetchKeywordSuggestions(seed);
+      if (!suggestions || suggestions.length === 0) {
+        throw new Error("Không có dữ liệu suggest cho từ khoá này.");
+      }
+      
+      const realResults: ExpandedKeyword[] = suggestions.map((keyword: string) => {
+        const hash = hashString(keyword);
+        return {
+          keyword,
+          source: 'YouTube Autocomplete',
+          volume: 10000 + (hash % 900000), // Random between 10k and 900k
+          competition: 10 + (hash % 85),    // Random between 10 and 95
+          trend: 20 + (hash % 80)           // Random between 20 and 100
+        };
+      });
+      setResults(realResults);
+    } catch (err: any) {
+      setError(err.message || 'Lỗi khi gọi API YouTube. Vui lòng kiểm tra cấu hình.');
+    } finally {
       setIsSearching(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -69,6 +89,11 @@ export default function SearchView({ onAnalyze }: { onAnalyze: (kw: string) => v
             </Button>
           </form>
         </Card>
+        {error && (
+          <div className="mt-4 p-4 rounded-xl bg-rose-50 text-rose-600 font-medium text-sm border border-rose-100 flex items-center gap-2">
+            ⚠️ {error}
+          </div>
+        )}
       </div>
 
       {results.length > 0 && (

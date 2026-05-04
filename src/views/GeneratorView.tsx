@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, Button, Badge } from '../components/ui/shared';
-import { isGeminiConfigured, generateContentStrategy } from '../lib/gemini';
+import { generateContentStrategy, checkGeminiConfig } from '../lib/api-service';
 import { Sparkles, ArrowLeft, Loader2, PlaySquare, FileText, Anchor, Hash, PenTool, Image as ImageIcon, Flame, Users2 } from 'lucide-react';
 import { AlertCircle } from 'lucide-react';
 import { mockOutlierVideos } from '../data/mockData';
@@ -11,12 +11,17 @@ export default function GeneratorView({ keyword, onBack, onNavigate }: { keyword
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<any>(null);
+  const [isConfigured, setIsConfigured] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (keyword && isGeminiConfigured) {
-      generate(keyword);
-    }
+    checkGeminiConfig().then(configured => {
+      setIsConfigured(configured);
+      if (keyword && configured) {
+        generate(keyword);
+      }
+    });
   }, [keyword]);
+
 
   const generate = async (kw: string) => {
     setLoading(true);
@@ -31,7 +36,7 @@ export default function GeneratorView({ keyword, onBack, onNavigate }: { keyword
     }
   };
 
-  if (!isGeminiConfigured) {
+  if (isConfigured === false) {
     return (
       <div className="space-y-6">
         <Button variant="ghost" onClick={onBack} className="mb-4 -ml-4">
