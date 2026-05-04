@@ -5,9 +5,9 @@ import GeneratorView from './views/GeneratorView';
 import IntegrationDocView from './views/IntegrationDocView';
 import SearchView from './views/SearchView';
 import { cn } from './lib/utils';
-import { LayoutDashboard, Compass, Sparkles, BookOpen, Menu, X, Flame, Search } from 'lucide-react';
+import { LayoutDashboard, Compass, Sparkles, BookOpen, Menu, X, Flame, Search, Youtube } from 'lucide-react';
 
-type View = 'dashboard' | 'search' | 'discovery' | 'generator' | 'settings';
+type View = 'dashboard' | 'search' | 'discovery' | 'generator' | 'niche-discovery' | 'settings';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('search');
@@ -61,7 +61,6 @@ export default function App() {
           <NavItem view="search" icon={Search} label="Mở rộng từ khoá" />
           <NavItem view="dashboard" icon={LayoutDashboard} label="Dashboard" />
           <NavItem view="discovery" icon={Compass} label="Từ khoá đã lưu" />
-          <NavItem view="generator" icon={Sparkles} label="AI Khai thác" />
           
           <div className="pt-6 pb-2">
             <p className="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Hệ Thống</p>

@@ -11,6 +11,52 @@ export type Difficulty = 'Easy' | 'Medium' | 'Hard';
 export type RpmPotential = 'Low' | 'Medium' | 'High';
 export type VideoLength = 'Short (<5m)' | 'Medium (5-10m)' | 'Long (>10m)';
 
+export interface TrendAlert {
+  id: string;
+  niche: string;
+  videoTitle: string;
+  channelName: string;
+  subs: number;
+  viewVelocity: number; // views per hour
+  timestamp: string;
+  isRead: boolean;
+}
+
+export const mockTrendAlerts: TrendAlert[] = [
+  { id: 'ta1', niche: 'Technology', videoTitle: 'I leaked the new OpenAI Sora code...', channelName: 'DevSecret', subs: 1200, viewVelocity: 25400, timestamp: '15 phút trước', isRead: false },
+  { id: 'ta2', niche: 'Finance', videoTitle: 'Why this invisible crypto is pumping right now', channelName: 'CoinHunter', subs: 340, viewVelocity: 8500, timestamp: '1 giờ trước', isRead: false },
+  { id: 'ta3', niche: 'Gaming', videoTitle: 'GTA 6 Hidden Map Feature discovered', channelName: 'GamerX', subs: 4500, viewVelocity: 42000, timestamp: '2 giờ trước', isRead: true }
+];
+
+export interface ContentGap {
+  id: string;
+  keyword: string;
+  niche: string;
+  searchVolume: number;
+  topVideoAvgAgeMonths: number;
+  gapReason: 'Old Content' | 'Low Quality' | 'Irrelevant Top Results';
+  gapScore: number;
+}
+
+export const mockContentGaps: ContentGap[] = [
+  { id: 'cg1', keyword: 'best budget camera for youtube 2026', niche: 'Technology', searchVolume: 125000, topVideoAvgAgeMonths: 24, gapReason: 'Old Content', gapScore: 95 },
+  { id: 'cg2', keyword: 'how to fix posture fast', niche: 'Health', searchVolume: 450000, topVideoAvgAgeMonths: 36, gapReason: 'Low Quality', gapScore: 88 },
+  { id: 'cg3', keyword: 'faceless channel ideas ai', niche: 'Finance', searchVolume: 320000, topVideoAvgAgeMonths: 2, gapReason: 'Irrelevant Top Results', gapScore: 92 }
+];
+
+export interface TrackerProject {
+  id: string;
+  name: string;
+  keywords: string[];
+  daysUntilSaturation: number;
+  status: 'Hot' | 'Cooling' | 'Saturated';
+}
+
+export const mockProjects: TrackerProject[] = [
+  { id: 'p1', name: 'Dự án "AI Tools" Tháng 5', keywords: ['ai coding assistants 2026', 'chatgpt 5 prompt engineering'], daysUntilSaturation: 45, status: 'Hot' },
+  { id: 'p2', name: 'Kênh Review Tech', keywords: ['local llm on macbook m5', 'how to repair macbook screen m3'], daysUntilSaturation: 14, status: 'Cooling' }
+];
+
 export interface KeywordData {
   id: string;
   keyword: string;
@@ -93,6 +139,70 @@ const createKeyword = (
 };
 
 export const categories = ["Technology", "Finance", "Gaming", "Lifestyle", "Education", "Health"];
+
+export interface OutlierVideo {
+  id: string;
+  title: string;
+  thumbnail: string;
+  channelName: string;
+  subscriberCount: number;
+  viewCount: number;
+  niche: string;
+  publishedAt: string;
+}
+
+export const mockOutlierVideos: OutlierVideo[] = [
+  {
+    id: 'v1',
+    title: 'How I built an AI SaaS in 1 weekend',
+    thumbnail: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=640&q=80',
+    channelName: 'Indie Code',
+    subscriberCount: 1200,
+    viewCount: 45000,
+    niche: 'Technology',
+    publishedAt: '2026-04-15'
+  },
+  {
+    id: 'v2',
+    title: 'Why Bellingham is Madrid\'s real MVP',
+    thumbnail: 'https://images.unsplash.com/photo-1518605368461-1e1e38ce8058?auto=format&fit=crop&w=640&q=80',
+    channelName: 'Football Analyst',
+    subscriberCount: 4500,
+    viewCount: 255000,
+    niche: 'Football',
+    publishedAt: '2026-05-01'
+  },
+  {
+    id: 'v3',
+    title: 'DO NOT buy the M5 MacBook Air until you watch this',
+    thumbnail: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=640&q=80',
+    channelName: 'Tech Lens',
+    subscriberCount: 8200,
+    viewCount: 480000,
+    niche: 'Review',
+    publishedAt: '2026-03-20'
+  },
+  {
+    id: 'v4',
+    title: 'I tried 50 AI video generators so you don\'t have to',
+    thumbnail: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=640&q=80',
+    channelName: 'AI Explorer',
+    subscriberCount: 3100,
+    viewCount: 125000,
+    niche: 'Technology',
+    publishedAt: '2026-04-28'
+  },
+  {
+    id: 'v5',
+    title: 'The unexpected truth about cheap espresso machines',
+    thumbnail: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=640&q=80',
+    channelName: 'Brew Science',
+    subscriberCount: 1500,
+    viewCount: 85000,
+    niche: 'Review',
+    publishedAt: '2026-05-02'
+  }
+];
 
 export const mockKeywords: KeywordData[] = [
   createKeyword('ai tools for video editing 2026', 'Technology', 125000, 35, 95, 4.5, 42, 85000, 3.2, 'High', 'Medium', 'Informational', 'Medium (5-10m)', ['US', 'UK', 'CA']),

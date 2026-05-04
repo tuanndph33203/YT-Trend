@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Card, Button, Badge } from '../components/ui/shared';
 import { isGeminiConfigured, generateContentStrategy } from '../lib/gemini';
-import { Sparkles, ArrowLeft, Loader2, PlaySquare, FileText, Anchor, Hash, PenTool, Image as ImageIcon } from 'lucide-react';
+import { Sparkles, ArrowLeft, Loader2, PlaySquare, FileText, Anchor, Hash, PenTool, Image as ImageIcon, Flame, Users2 } from 'lucide-react';
 import { AlertCircle } from 'lucide-react';
+import { mockOutlierVideos } from '../data/mockData';
+import { getOutlierVideos } from '../lib/niche-finder';
+import NicheVideoCard from '../components/NicheVideoCard';
 
 export default function GeneratorView({ keyword, onBack, onNavigate }: { keyword: string; onBack: () => void; onNavigate: (v: string) => void }) {
   const [loading, setLoading] = useState(false);
@@ -196,6 +199,38 @@ export default function GeneratorView({ keyword, onBack, onNavigate }: { keyword
               </div>
               <p className="text-base leading-relaxed text-blue-50/90">{result.thumbnailIdea}</p>
            </Card>
+
+           <div className="pt-8 mb-4 border-t border-gray-100">
+             <div className="flex gap-3 mb-2 items-center">
+               <Flame className="w-6 h-6 text-orange-500 fill-orange-500/20" />
+               <h3 className="text-xl font-semibold text-gray-900">Video Đột Phá (Outliers) Cùng Ngách</h3>
+             </div>
+             <p className="text-sm text-gray-500 mb-6">Các video từ kênh nhỏ nhưng có lượt view vượt trội để tham khảo cấu trúc nội dung và phong cách thumbnail.</p>
+             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {getOutlierVideos(mockOutlierVideos, 'All').slice(0, 4).map(video => (
+                  <NicheVideoCard key={video.id} video={video} />
+                ))}
+             </div>
+           </div>
+
+           {/* SaaS Pro - Connect Freelancers */}
+           <div className="pt-8 mt-8 border-t border-gray-100">
+             <Card className="bg-white border-dashed border-2 border-indigo-200">
+               <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+                 <div>
+                   <div className="flex items-center gap-2 mb-2">
+                     <Users2 className="w-5 h-5 text-indigo-600" />
+                     <h3 className="font-semibold text-lg text-gray-900">Cần người thực hiện ý tưởng này?</h3>
+                     <Badge variant="warning" className="bg-amber-100 text-amber-800 border-0 uppercase text-[10px]">SaaS Pro</Badge>
+                   </div>
+                   <p className="text-sm text-gray-600">Thuê Editor chuyên nghiệp hoặc Thumbnail Designer trên hệ sinh thái của TrendFinder / Upwork để triển khai ngay trước khi trend bão hoà.</p>
+                 </div>
+                 <Button className="shrink-0 gap-2 bg-indigo-600 hover:bg-indigo-700">
+                   <Users2 className="w-4 h-4" /> Tìm Freelancer ngay (Từ 15$)
+                 </Button>
+               </div>
+             </Card>
+           </div>
         </div>
       )}
     </div>
